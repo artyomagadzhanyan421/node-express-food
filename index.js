@@ -1,9 +1,13 @@
+const express = require('express');
 const dotenv = require('dotenv');
+const connectDB = require('./mongodb/connect');
+const auth = require('./routes/auth');
+
 dotenv.config();
 
-const express = require('express');
 const app = express();
-const auth = require('./routes/auth');
+
+connectDB();
 
 app.use(express.json());
 
