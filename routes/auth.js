@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const User = require('../mongodb/models/User');
+const Token = require('../mongodb/models/Token');
 const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -75,6 +76,26 @@ router.post('/signin', async (req, res) => {
 
 router.get('/', authMiddleware, (req, res) => {
     res.send(`Hello, ${req.user.username}!`);
+});
+
+router.post('/signout', authMiddleware, async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.decode(token);
+
+        // Save blacklisted token with its expiration time
+        const newToken = new Token({
+            token,
+            expiresAt: new Date(decoded.exp * 1000) // JWT expiration is in seconds
+        });
+
+        await newToken.save();
+
+        res.status(200).json({ message: 'Signed out successfully!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to sign out!' });
+    }
 });
 
 module.exports = router;
