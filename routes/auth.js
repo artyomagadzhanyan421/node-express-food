@@ -7,6 +7,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
+// POST request (create a new user)
 router.post('/signup', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -40,6 +41,7 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+// POST request (to enter an account)
 router.post('/signin', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -74,10 +76,12 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+// GET request (to render our username)
 router.get('/', authMiddleware, (req, res) => {
     res.send(`Hello, ${req.user.username}!`);
 });
 
+// POST request (to leave an account)
 router.post('/signout', authMiddleware, async (req, res) => {
     try {
         const token = req.headers.authorization.split(' ')[1];

@@ -6,29 +6,33 @@ const cloudinary = require('../utils/cloudinary');
 
 const router = express.Router();
 
+// GET request (for all recipes)
 router.get('/', authMiddleware, async (req, res) => {
     try {
         const recipes = await Recipe.find();
         res.status(200).json(recipes);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Failed to fetch recipes' });
+        res.status(500).json({ message: 'Failed to fetch recipes!' });
     }
 });
 
+
+// GET request (for a single recipe)
 router.get('/:id', authMiddleware, async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
         if (!recipe) {
-            return res.status(404).json({ message: 'Recipe not found' });
+            return res.status(404).json({ message: 'Recipe not found!' });
         }
         res.status(200).json(recipe);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Failed to fetch recipe' });
+        res.status(500).json({ message: 'Failed to fetch recipe!' });
     }
 });
 
+// POST request (to create new recipe)
 router.post('/', authMiddleware, (req, res, next) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Forbidden, admins only!' });
@@ -69,6 +73,7 @@ router.post('/', authMiddleware, (req, res, next) => {
     }
 });
 
+// DELETE request (to delete recipe)
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
         if (req.user.role !== 'admin') {
@@ -93,6 +98,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     }
 });
 
+// PUT request (to updated an existitng recipe)
 router.put('/:id', authMiddleware, (req, res, next) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Forbidden, admins only!' });
@@ -102,7 +108,7 @@ router.put('/:id', authMiddleware, (req, res, next) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
         if (!recipe) {
-            return res.status(404).json({ message: 'Recipe not found' });
+            return res.status(404).json({ message: 'Recipe not found!' });
         }
 
         const updatableFields = ['title', 'description', 'ingredients', 'tags', 'time'];
@@ -144,7 +150,7 @@ router.put('/:id', authMiddleware, (req, res, next) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Failed to update recipe' });
+        res.status(500).json({ message: 'Failed to update recipe!' });
     }
 });
 
