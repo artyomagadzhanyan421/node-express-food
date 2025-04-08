@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const recipeSchema = new mongoose.Schema({
     picture: { type: String, required: true },
+    public_id: { type: String, required: true },
     description: { type: String, required: true },
     ingredients: { type: [String], required: true },
     tags: { type: [String], required: true },

@@ -2,6 +2,7 @@ const express = require('express');
 const Recipe = require('../mongodb/models/Recipe');
 const upload = require('../middleware/cloudinaryStorage');
 const authMiddleware = require('../middleware/authMiddleware');
+const cloudinary = require('../utils/cloudinary');
 
 const router = express.Router();
 
@@ -65,6 +66,30 @@ router.post('/', authMiddleware, (req, res, next) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Failed to create recipe!' });
+    }
+});
+
+router.delete('/:id', authMiddleware, async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Forbidden, admins only!' });
+        }
+
+        const recipe = await Recipe.findById(req.params.id);
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found!' });
+        }
+
+        // Delete image from Cloudinary
+        await cloudinary.uploader.destroy(recipe.public_id);
+
+        // Delete recipe from DB
+        await recipe.deleteOne();
+
+        res.status(200).json({ message: 'Recipe deleted successfully!' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to delete recipe!' });
     }
 });
 
