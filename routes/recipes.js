@@ -17,7 +17,6 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 });
 
-
 // GET request (for a single recipe)
 router.get('/:id', authMiddleware, async (req, res) => {
     try {
