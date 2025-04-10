@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const connectDB = require('./mongodb/connect');
 const auth = require('./routes/auth');
 const recipes = require('./routes/recipes');
@@ -9,6 +10,8 @@ dotenv.config();
 const app = express();
 
 connectDB();
+
+app.use(cors());
 
 app.use(express.json());
 
