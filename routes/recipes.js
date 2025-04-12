@@ -44,12 +44,13 @@ router.post('/', authMiddleware, (req, res, next) => {
             description,
             ingredients,
             tags,
-            time
+            time,
+            cuisine
         } = req.body;
 
         // Validate required fields
         if (
-            !title || !description || !req.file || !ingredients || !tags || time === undefined
+            !title || !description || !req.file || !ingredients || !cuisine || !tags || time === undefined
         ) {
             return res.status(400).json({ message: 'Missing required fields!' });
         }
@@ -60,6 +61,7 @@ router.post('/', authMiddleware, (req, res, next) => {
             ingredients: typeof ingredients === 'string' ? ingredients.split(',').map(i => i.trim()) : ingredients,
             tags: typeof tags === 'string' ? tags.split(',').map(t => t.trim()) : tags,
             time,
+            cuisine,
             picture: req.file.path,
             public_id: req.file.filename
         });
@@ -110,7 +112,7 @@ router.put('/:id', authMiddleware, (req, res, next) => {
             return res.status(404).json({ message: 'Recipe not found!' });
         }
 
-        const updatableFields = ['title', 'description', 'ingredients', 'tags', 'time'];
+        const updatableFields = ['title', 'description', 'ingredients', 'tags', 'time', 'cuisine'];
         const updateFields = {};
 
         for (let key of updatableFields) {
