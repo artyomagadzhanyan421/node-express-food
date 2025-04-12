@@ -19,6 +19,21 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 });
 
+// GET request (for all random recipe)
+router.get("/random", async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 0;
+
+        const recipes = await Recipe.aggregate([
+            { $sample: { size: limit > 0 ? limit : await Recipe.countDocuments() } }
+        ]);
+
+        res.status(200).json(recipes);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch recipes." });
+    }
+});
+
 // GET request (for a single recipe)
 router.get('/:id', authMiddleware, async (req, res) => {
     try {
