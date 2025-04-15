@@ -1,8 +1,9 @@
 const express = require('express');
 const Recipe = require('../mongodb/models/Recipe');
-const upload = require('../middleware/cloudinaryStorage');
+const upload = require('../middleware/memoryUpload.js');
 const authMiddleware = require('../middleware/authMiddleware');
 const cloudinary = require('../utils/cloudinary');
+const streamifier = require('streamifier');
 
 const router = express.Router();
 
@@ -49,47 +50,62 @@ router.get('/:id', authMiddleware, async (req, res) => {
 });
 
 // POST request (to create new recipe)
-router.post('/', authMiddleware, (req, res, next) => {
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Forbidden, admins only!' });
-    }
-    next(); // continue to upload if admin
-}, upload.single('picture'), async (req, res) => {
-    try {
-        const {
-            title,
-            description,
-            ingredients,
-            tags,
-            time,
-            cuisine
-        } = req.body;
-
-        // Validate required fields
-        if (
-            !title || !description || !req.file || !ingredients || !cuisine || !tags || time === undefined
-        ) {
-            return res.status(400).json({ message: 'Missing required fields!' });
+router.post(
+    '/',
+    authMiddleware,
+    (req, res, next) => {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: 'Forbidden, admins only!' });
         }
+        next();
+    },
+    upload.single('picture'),
+    async (req, res) => {
+        try {
+            const { title, description, ingredients, tags, time, cuisine } = req.body;
 
-        const recipe = new Recipe({
-            title,
-            description,
-            ingredients: typeof ingredients === 'string' ? ingredients.split(',').map(i => i.trim()) : ingredients,
-            tags: typeof tags === 'string' ? tags.split(',').map(t => t.trim()) : tags,
-            time,
-            cuisine,
-            picture: req.file.path,
-            public_id: req.file.filename
-        });
+            if (!title || !description || !ingredients || !tags || time === undefined || !cuisine) {
+                return res.status(400).json({ message: 'Missing required fields!' });
+            }
 
-        const saved = await recipe.save();
-        res.status(201).json(saved);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Failed to create recipe!' });
+            const streamUpload = (buffer) => {
+                return new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream(
+                        { folder: 'recipes' },
+                        (error, result) => {
+                            if (result) {
+                                resolve(result);
+                            } else {
+                                reject(error);
+                            }
+                        }
+                    );
+                    streamifier.createReadStream(buffer).pipe(stream);
+                });
+            };
+
+            const result = await streamUpload(req.file.buffer);
+
+            const recipe = new Recipe({
+                title,
+                description,
+                ingredients: typeof ingredients === 'string' ? ingredients.split(',').map(i => i.trim()) : ingredients,
+                tags: typeof tags === 'string' ? tags.split(',').map(t => t.trim()) : tags,
+                time,
+                cuisine,
+                picture: result.secure_url,
+                public_id: result.public_id
+            });
+
+            const saved = await recipe.save();
+            res.status(201).json(saved);
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Failed to create recipe!' });
+        }
     }
-});
+);
 
 // DELETE request (to delete recipe)
 router.delete('/:id', authMiddleware, async (req, res) => {
@@ -156,8 +172,26 @@ router.put('/:id', authMiddleware, (req, res, next) => {
         // Handle image update
         if (req.file) {
             await cloudinary.uploader.destroy(recipe.public_id);
-            updateFields.picture = req.file.path;
-            updateFields.public_id = req.file.filename;
+
+            const streamUpload = (buffer) => {
+                return new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream(
+                        { folder: 'recipes' },
+                        (error, result) => {
+                            if (result) {
+                                resolve(result);
+                            } else {
+                                reject(error);
+                            }
+                        }
+                    );
+                    streamifier.createReadStream(buffer).pipe(stream);
+                });
+            };
+
+            const result = await streamUpload(req.file.buffer);
+            updateFields.picture = result.secure_url;
+            updateFields.public_id = result.public_id;
         }
 
         // Apply updates
