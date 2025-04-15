@@ -98,7 +98,7 @@ router.post(
             });
 
             const saved = await recipe.save();
-            res.status(201).json(saved);
+            res.status(201).json({ saved, message: "Recipe created successfully!" });
 
         } catch (err) {
             console.error(err);
