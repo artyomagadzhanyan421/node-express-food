@@ -198,7 +198,7 @@ router.put('/:id', authMiddleware, (req, res, next) => {
         Object.assign(recipe, updateFields);
         const updated = await recipe.save();
 
-        res.status(200).json(updated);
+        res.status(200).json({ updated, message: "Recipe updated successfully!" });
 
     } catch (err) {
         console.error(err);
