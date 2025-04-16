@@ -62,9 +62,9 @@ router.post(
     upload.single('picture'),
     async (req, res) => {
         try {
-            const { title, description, ingredients, tags, time, cuisine } = req.body;
+            const { title, description, ingredients, tags, time, cuisine, instructions } = req.body;
 
-            if (!title || !description || !ingredients || !tags || time === undefined || !cuisine) {
+            if (!title || !description || !ingredients || !tags || time === undefined || !cuisine || !instructions) {
                 return res.status(400).json({ message: 'Missing required fields!' });
             }
 
@@ -93,6 +93,7 @@ router.post(
                 tags: typeof tags === 'string' ? tags.split(',').map(t => t.trim()) : tags,
                 time,
                 cuisine,
+                instructions,
                 picture: result.secure_url,
                 public_id: result.public_id
             });
@@ -145,7 +146,7 @@ router.put('/:id', authMiddleware, (req, res, next) => {
             return res.status(404).json({ message: 'Recipe not found!' });
         }
 
-        const updatableFields = ['title', 'description', 'ingredients', 'tags', 'time', 'cuisine'];
+        const updatableFields = ['title', 'description', 'ingredients', 'tags', 'time', 'cuisine', 'instructions'];
         const updateFields = {};
 
         for (let key of updatableFields) {

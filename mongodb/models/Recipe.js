@@ -9,6 +9,7 @@ const recipeSchema = new mongoose.Schema({
     time: { type: Number, required: true },
     title: { type: String, required: true },
     cuisine: { type: String, required: true },
+    instructions: { type: String, require },
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
     adds: { type: Number, default: 0 },
