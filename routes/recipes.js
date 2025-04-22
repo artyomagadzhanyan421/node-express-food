@@ -9,10 +9,11 @@ const router = express.Router();
 
 // GET request (for all recipes)
 router.get('/', authMiddleware, async (req, res) => {
-    const limit = parseInt(req.query.limit) || 0; // default: no limit
+    const limit = parseInt(req.query.limit) || 6;
+    const skip = parseInt(req.query.skip) || 0;
 
     try {
-        const recipes = await Recipe.find().limit(limit);
+        const recipes = await Recipe.find().skip(skip).limit(limit);
         res.status(200).json(recipes);
     } catch (err) {
         console.error(err);
