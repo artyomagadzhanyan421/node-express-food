@@ -9,48 +9,10 @@ const router = express.Router();
 
 // GET request (for all recipes)
 router.get('/', authMiddleware, async (req, res) => {
-    const limit = parseInt(req.query.limit) || 6;
-    const skip = parseInt(req.query.skip) || 0;
-
-    const {
-        title,
-        ingredients,
-        tags,
-        cuisine,
-        time
-    } = req.query;
-
-    const filter = {};
-
-    if (title) {
-        filter.title = { $regex: title, $options: 'i' };
-    }
-
-    if (ingredients) {
-        const ingredientsArray = ingredients.split(',').map(i => i.trim());
-        filter.ingredients = { $all: ingredientsArray };
-    }
-
-    if (tags) {
-        const tagsArray = tags.split(',').map(t => t.trim());
-        filter.tags = { $all: tagsArray };
-    }
-
-    if (cuisine) {
-        filter.cuisine = { $regex: cuisine, $options: 'i' };
-    }
-
-    if (time) {
-        filter.time = parseInt(time);
-    }
+    const limit = parseInt(req.query.limit) || 0; // default: no limit
 
     try {
-        const recipes = await Recipe.find(filter).skip(skip).limit(limit);
-
-        if (recipes.length === 0) {
-            return res.status(404).json({ message: "No recipes match your search!" });
-        }
-
+        const recipes = await Recipe.find().limit(limit);
         res.status(200).json(recipes);
     } catch (err) {
         console.error(err);
