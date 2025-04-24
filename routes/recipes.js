@@ -20,6 +20,49 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 });
 
+// GET request for searching recipes
+router.get('/search', authMiddleware, async (req, res) => {
+    try {
+        const { title, time, tags, ingredients, cuisine } = req.query;
+
+        const query = {};
+
+        if (title) {
+            query.title = { $regex: title, $options: 'i' };
+        }
+
+        if (time) {
+            query.time = parseInt(time);
+        }
+
+        if (tags) {
+            const tagArray = tags.split(',').map(t => t.trim());
+            query.tags = { $all: tagArray };
+        }
+
+        if (ingredients) {
+            const ingredientArray = ingredients.split(',').map(i => i.trim());
+            query.ingredients = { $all: ingredientArray };
+        }
+
+        if (cuisine) {
+            query.cuisine = { $regex: cuisine, $options: 'i' };
+        }
+
+        const recipes = await Recipe.find(query);
+
+        if (recipes.length === 0) {
+            return res.status(404).json({ message: 'No recipes found!' });
+        }
+
+        res.status(200).json(recipes);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Search failed, please try again later!' });
+    }
+});
+
 // GET request (for all random recipe)
 router.get("/random", async (req, res) => {
     try {
