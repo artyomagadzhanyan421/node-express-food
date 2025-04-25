@@ -20,6 +20,23 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 });
 
+// GET request for saved recipes
+router.get('/saved', authMiddleware, async (req, res) => {
+    try {
+        const User = require('../mongodb/models/User');
+        const user = await User.findById(req.userId).populate('savedRecipes');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found!' });
+        }
+
+        res.status(200).json(user.savedRecipes);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to fetch saved recipes!' });
+    }
+});
+
 // GET request for searching recipes
 router.get('/search', authMiddleware, async (req, res) => {
     try {
@@ -247,6 +264,37 @@ router.put('/:id', authMiddleware, (req, res, next) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Failed to update recipe!' });
+    }
+});
+
+// POST request (to save recipe)
+router.post('/:id/save', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.userId; // From authMiddleware
+        const recipeId = req.params.id;
+
+        // 1. Update the recipe (increase adds by 1)
+        const recipe = await Recipe.findByIdAndUpdate(
+            recipeId,
+            { $inc: { adds: 1 } },
+            { new: true }
+        );
+
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found!' });
+        }
+
+        // 2. Add recipe to user's saved recipes
+        const User = require('../mongodb/models/User.js'); // import your User model
+        await User.findByIdAndUpdate(
+            userId,
+            { $addToSet: { savedRecipes: recipeId } } // $addToSet prevents duplicates
+        );
+
+        res.status(200).json({ message: 'Recipe saved successfully!', recipe });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to save recipe!' });
     }
 });
 
