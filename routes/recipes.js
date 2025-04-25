@@ -102,7 +102,13 @@ router.get('/:id', authMiddleware, async (req, res) => {
         if (!recipe) {
             return res.status(404).json({ message: 'Recipe not found!' });
         }
-        res.status(200).json(recipe);
+
+        const User = require('../mongodb/models/User');
+        const user = await User.findById(req.userId);
+
+        const isSaved = user.savedRecipes.includes(req.params.id);
+
+        res.status(200).json({ ...recipe.toObject(), isSaved });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Failed to fetch recipe!' });
