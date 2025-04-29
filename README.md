@@ -51,8 +51,31 @@ Example format:
 mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net/<database_name>
 ```
 
-Use this in your .env file as:
+Use this in your ```.env``` file as:
 
 ```env
 MONGO_URI=mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net/<database_name>
+```
+
+### Cloudinary
+
+We use Cloudinary to store and serve uploaded images (e.g., recipe pictures)
+
+#### 1. Create a Cloudinary account
+
+Sign up at https://cloudinary.com/
+
+#### 2. Get your Cloudinary credentials
+
+After logging in:
+
+* Go to the **Dashboard**
+* Copy the following: ```Cloud name```, ```API Key```, ```API Secret```
+
+#### 3. Add Cloudinary
+
+```env
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 ```
