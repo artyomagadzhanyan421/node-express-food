@@ -44,3 +44,9 @@ Once your cluster is ready:
 * Go to **Database Access** and create a user with a username and password
 * Then go to **Network Access** and allow access from your IP or anywhere
 * Click **Connect** > **Connect Your Application** and copy the connection URI
+
+Example format:
+
+```env
+mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net/<database_name>
+```
