@@ -110,4 +110,4 @@ Start the development server:
 npx nodemon index.js
 ```
 
-The app should now be running at http://localhost:5000 and connected MongoDB database. Check out [client repository](https://github.com/artyomagadzhanyan421/react-typescript-food) to lunch the applicatoin.
+The app should now be running at http://localhost:5000 with connected MongoDB database. Check out [client repository](https://github.com/artyomagadzhanyan421/react-typescript-food) to lunch the applicatoin.
