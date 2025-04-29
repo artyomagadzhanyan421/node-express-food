@@ -29,3 +29,15 @@ If you don't already have one, create a free account at https://www.mongodb.com/
 * Choose the free-tier (Shared Cluster)
 * Select your cloud provider and region
 * Click **Create Cluster**
+
+#### Create the database and collections
+
+Once your cluster is ready:
+
+* Go to **Collections**
+* Click **Create Database**
+    * Database name: ```database```
+    * Collections:
+        * ```users```
+        * ```recipes```
+        * ```tokens```
