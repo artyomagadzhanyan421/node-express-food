@@ -13,3 +13,8 @@ Server side for culinary application using Node.js (Express) and MongoDB for peo
 * Full CRUD functionality for an admin (create, trash and edit recipes)
 * Ability to rate (like or dislike) and save prefered recipes
 * [Cloudinary](https://cloudinary.com/) for cloud storage (image files)
+
+### Documentation
+
+> [!IMPORTANT]  
+> Make sure you've installed the latest version of [Git](https://git-scm.com/) on your machine already!
