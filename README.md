@@ -50,3 +50,9 @@ Example format:
 ```env
 mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net/<database_name>
 ```
+
+Use this in your .env file as:
+
+```env
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net/<database_name>
+```
