@@ -75,7 +75,7 @@ After logging in:
 #### 3. Add Cloudinary
 
 ```env
-MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/database?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net/<database_name>
 
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
