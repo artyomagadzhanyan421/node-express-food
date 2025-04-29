@@ -38,3 +38,9 @@ Once your cluster is ready:
 * Click **Create Database**
 * Database name: ```database```
 * Collections: ```users```, ```recipes```, ```tokens```
+
+#### 4. Get Your MongoDB URI
+
+* Go to **Database Access** and create a user with a username and password
+* Then go to **Network Access** and allow access from your IP or anywhere
+* Click **Connect** > **Connect Your Application** and copy the connection URI
