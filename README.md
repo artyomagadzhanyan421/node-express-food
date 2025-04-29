@@ -19,6 +19,6 @@ Server side for culinary application using Node.js (Express) and MongoDB for peo
 > [!IMPORTANT]  
 > Make sure you've installed the latest version of [Git](https://git-scm.com/) on your machine already!
 
-### 1. Create a MongoDB Account
+#### 1. Create a MongoDB Account
 
 If you don't already have one, create a free account at https://www.mongodb.com/cloud.
