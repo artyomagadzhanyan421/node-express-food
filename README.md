@@ -103,3 +103,11 @@ CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 ```
+
+Start the development server:
+
+```bash
+npx nodemon index.js
+```
+
+The app should now be running at http://localhost:5000 and connected MongoDB database. Check out [client repository](https://github.com/artyomagadzhanyan421/react-typescript-food) to lunch the applicatoin.
