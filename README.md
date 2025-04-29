@@ -81,3 +81,23 @@ CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 ```
+
+### Installation
+
+Open your terminal and clone this repository:
+
+```bash
+git clone https://github.com/artyomagadzhanyan421/node-express-food.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd node-express-food
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
