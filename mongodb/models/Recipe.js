@@ -16,4 +16,4 @@ const recipeSchema = new mongoose.Schema({
     notes: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model('Recipe', recipeSchema);
+module.exports = mongoose.model('recipes', recipeSchema);
