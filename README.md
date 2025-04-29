@@ -10,8 +10,6 @@ Server side for culinary application using Node.js (Express) and MongoDB for peo
 
 * JWT based authentication system with automatic log out
 * Role orriented structure (user and admin)
-* Custom hooks for rendering and searching recipes
 * Full CRUD functionality for an admin (create, trash and edit recipes)
 * Ability to rate (like or dislike) and save prefered recipes
-* [React Loading Skeleton](https://github.com/dvtng/react-loading-skeleton) for loading states
-* [TipTap](https://github.com/ueberdosis/tiptap) for custom reach text editor
+* [Cloudinary](https://cloudinary.com/) for cloud storage (image files)
