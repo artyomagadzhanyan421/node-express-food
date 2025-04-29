@@ -14,10 +14,32 @@ Server side for culinary application using Node.js (Express) and MongoDB for peo
 * Ability to rate (like or dislike) and save prefered recipes
 * [Cloudinary](https://cloudinary.com/) for cloud storage (image files)
 
-### MongoDB
+### Installation
 
 > [!IMPORTANT]  
 > Make sure you've installed the latest version of [Git](https://git-scm.com/) on your machine already!
+
+Open your terminal and clone this repository:
+
+```bash
+git clone https://github.com/artyomagadzhanyan421/node-express-food.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd node-express-food
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+### MongoDB
+
+We use MongoDB to store data for users, recipes, and tokens
 
 #### 1. Create a MongoDB account
 
@@ -80,24 +102,4 @@ MONGO_URI=mongodb+srv://<username>:<password>@<cluster_name>.r5pdghm.mongodb.net
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
-```
-
-### Installation
-
-Open your terminal and clone this repository:
-
-```bash
-git clone https://github.com/artyomagadzhanyan421/node-express-food.git
-```
-
-Navigate to the project directory:
-
-```bash
-cd node-express-food
-```
-
-Install dependencies:
-
-```bash
-npm install
 ```
