@@ -1,6 +1,6 @@
 # BiteBook
 
-Server side for culinary application using Node.js (Express) and MongoDB for people who want to check out unique and interesting recipes. This application was completed as a freelance project for a small local business in the catering industry.
+Server side for culinary application using Node.js (Express) and MongoDB for people who want to check out unique and interesting recipes.
 
 ![node.js](https://img.shields.io/badge/node-v20.16.0-green?style=flat)
 ![express](https://img.shields.io/badge/express-^5.1.0-orange?style=flat)
