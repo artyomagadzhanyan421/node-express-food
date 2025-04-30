@@ -11,7 +11,7 @@ Server side for culinary application using Node.js (Express) and MongoDB for peo
 * JWT based authentication system with automatic log out
 * Role orriented structure (user and admin)
 * Full CRUD functionality for an admin (create, trash and edit recipes)
-* Ability to rate (like or dislike) and save prefered recipes
+* Ability to rate (like or dislike) and save preferred recipes
 * [Cloudinary](https://cloudinary.com/) for cloud storage (image files)
 
 ### Installation
