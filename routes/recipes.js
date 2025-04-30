@@ -34,7 +34,7 @@ router.get('/saved', authMiddleware, async (req, res) => {
     }
 });
 
-// GET request for saved recipes
+// GET request for favourite recipes
 router.get('/favourites', authMiddleware, async (req, res) => {
     try {
         const User = require('../mongodb/models/User');
@@ -106,6 +106,19 @@ router.get("/random", async (req, res) => {
         res.status(200).json(recipes);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch recipes." });
+    }
+});
+
+// GET request for the most popular recipes
+router.get('/popular', async (req, res) => {
+    try {
+        const recipes = await Recipe.find()
+            .sort({ likes: -1 }) // Sort descending by likes
+            .limit(6);
+
+        res.status(200).json(recipes);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch most liked recipes" });
     }
 });
 
